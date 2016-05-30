@@ -1,0 +1,91 @@
+//Diego Rojas
+Bolas h1 = new Bolas(20, 20, 2.0,"LEFT"); 
+ArrayList<Bolas> balls = new ArrayList<Bolas>();
+//Bolas h2 = new Bolas(50, 2.5,"der"); 
+void setup() 
+{
+  size(600, 600);
+  frameRate(30);
+  mouseX = width/2;
+  mouseY = height/2;
+}
+
+void draw() { 
+  background(204);
+  //redraw();
+  h1.update();  
+} 
+
+ void keyPressed() {
+  if (key == CODED) {
+    if (keyCode == UP) {
+      h1.setColor(255);
+      h1.setDireccion("UP");
+    } else if (keyCode == DOWN) {
+      h1.setColor(0);
+      h1.setDireccion("DOWN");
+    } else if (keyCode == LEFT) {
+      h1.setColor(123);
+      h1.setDireccion("LEFT");
+    } else if (keyCode == RIGHT) {
+      h1.setColor(190);
+      h1.setDireccion("RIGHT");
+    }  
+  } else if (key == 's') {
+      h1.setSpeed(5);
+    } else if (key == 'b') {
+      h1.setSpeed(-5);
+    } 
+}
+void mousePressed() {
+  if (mouseButton == LEFT) {
+    //fill(0);
+  } 
+}
+
+class Bolas { 
+  float xpos, ypos, speed;
+  String direccion; 
+  color colorBola = 126;
+  Bolas (float x, float y,float s, String d) {  
+    xpos = x; 
+    ypos = y;
+    speed = s; 
+    direccion = d;
+  }
+  void setDireccion(String d){
+    direccion = d;
+  }
+  void setColor(color c){
+      colorBola = c;
+  }
+  void setSpeed(float s){
+      speed += s;  
+  }
+  void update() { 
+    if(direccion.equals("RIGHT")){
+        xpos += speed; 
+        if (xpos > width) { 
+          xpos = 0; 
+        }
+    }else if (direccion.equals("LEFT")){
+      xpos -= speed; 
+      if(xpos < 0) { 
+        xpos = width; 
+      }
+    }else if (direccion.equals("UP")){
+      ypos -= speed; 
+      if(ypos < 0) { 
+        ypos = height; 
+      }
+    }else if (direccion.equals("DOWN")){
+      ypos += speed; 
+      if(ypos > height) { 
+        ypos = 0; 
+      }
+    }
+    fill(colorBola, random(255), noise(255));
+    ellipseMode(RADIUS);
+    ellipse(xpos, ypos, 20, 20); 
+  } 
+} 

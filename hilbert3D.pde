@@ -48,6 +48,7 @@ void draw() {
   last = time;
   
   float frame = (time - start) / 30000.0;
+  while (frame > 32.0) frame -= 32.0;
   
   background(196, 196, 255);
   lights();

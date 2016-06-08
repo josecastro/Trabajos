@@ -71,8 +71,7 @@ void draw() {
   text("Jose Castro - 3D Hilbert Space Filling Curve " + frame, 10, height - 50);
 }
 
-void drawCylinder(int sides, float r, float h)
-{
+void drawCylinder(int sides, float r, float h) {
   float angle = 360 / sides;
 
   sphere(r);
@@ -107,8 +106,8 @@ int sides = 10;
 static int EXTENSION = 8;
 static int SIDES = 8;
 
-void generateHilbert(int size, int m, float clock, float scale) // m = order of Hilbert approximation
-{
+void generateHilbert(int size, int m, float clock, float scale) // m = order of Hilbert approximation {
+
   int duration  = 1 << (m - 1);
   int gradation = 1 << m; // amount of subdivisions on each dimension
   int maxloop = gradation*gradation*gradation; 
@@ -165,39 +164,30 @@ void generateHilbert(int size, int m, float clock, float scale) // m = order of 
       pushMatrix();
       translate(scale*(point1[0]*meassure+offset), scale*(point1[1]*meassure+offset), scale*(point1[2]*meassure+offset));
 
-      if (point1[2] > point2[2])
-        // glRotated(180, 1, 0, 0);
-        rotateX(PI);
+      if (point1[2] > point2[2]) rotateX(PI);
       else
         if (point1[2] == point2[2])
           if (point1[1] != point2[1])
-            // glRotated(90*(point1[1]-point2[1]), 1, 0, 0);
             rotateX((point1[1]-point2[1])*PI*0.5);
           else
-            // glRotated(90*(point2[0]-point1[0]), 0, 1, 0);
             rotateY((point2[0]-point1[0])*PI*0.5);
 
       if (clock >= extension + ((i-1)*1.0*duration)/maxloop+(duration-1)) {
         pushMatrix();
         float clck = clock - extension;
-
         translate(0, 0, scale*meassure*(clck-(((i-1)*1.0*duration)/maxloop + (duration-1)))*maxloop/duration);
-
         sphere(size*width*scale);
-
-        // gluCylinder(cylinder, size*width, size*width, meassure-meassure*(clck-(((i-1)*1.0*duration)/maxloop + (duration-1)))*maxloop/duration, sides, sides);
         drawCylinder(20, size*width*scale, scale*(meassure-meassure*(clck-(((i-1)*1.0*duration)/maxloop + (duration-1)))*maxloop/duration));
+        
         popMatrix();
       } else {
         sphere(size*width*scale);
 
-        if (clock > (((i+1)*1.0*duration)/maxloop + (duration-1))) {
-          // gluCylinder( cylinder, size*width, size*width, meassure, sides, sides);
+        if (clock > (((i+1)*1.0*duration)/maxloop + (duration-1))) 
           drawCylinder(20, size*width*scale, scale*meassure);
-        } else {
+        else {
           pushMatrix();
 
-          //gluCylinder(cylinder, size*width, size*width, meassure*(clock-((i*1.0*duration)/maxloop + (duration-1)))*maxloop/duration, sides, sides);
           drawCylinder(20, size*width*scale, scale*meassure*(clock-((i*1.0*duration)/maxloop + (duration-1)))*maxloop/duration);
 
           translate(0, 0, scale*meassure*(clock-((i*1.0*duration)/maxloop + (duration-1)))*maxloop/duration);
@@ -215,20 +205,17 @@ void generateHilbert(int size, int m, float clock, float scale) // m = order of 
     }
   }
 
-  if ((clock >  (duration + duration-1)) &&
-    (clock < (duration + duration-1+extension)))
-  {
+  if ((clock >  (duration + duration-1)) && (clock < (duration + duration-1+extension))) {
+  
     int val = maxloop;
-    for (j = 0; j < m; ++j)
-    {
+    for (j = 0; j < m; ++j) {
       key[m-1-j] = val % rho_iSize;
       val /= rho_iSize;
     }
     mapKey(key, 3, m, point2);
 
     val = maxloop-1;
-    for (j = 0; j < m; ++j)
-    {
+    for (j = 0; j < m; ++j) {
       key[m-1-j] = val % rho_iSize;
       val /= rho_iSize;
     }
@@ -236,16 +223,13 @@ void generateHilbert(int size, int m, float clock, float scale) // m = order of 
 
     pushMatrix();
     translate(scale*(point1[0]*meassure+offset), scale*(point1[1]*meassure+offset), scale*(point1[2]*meassure+offset));
-    if (point1[2] > point2[2])
-      // glRotated(180, 1, 0, 0);
-      rotateX(PI);
+    
+    if (point1[2] > point2[2]) rotateX(PI);
     else
       if (point1[2] == point2[2])
         if (point1[1] != point2[1])
-          // glRotated(90*(point1[1]-point2[1]), 1, 0, 0);
           rotateX(0.5*PI*(point1[1]-point2[1]));
         else
-          // rotate(90*(point2[0]-point1[0]), 0, 1, 0);
           rotateY(0.5*PI*(point2[0]-point1[0]));
 
     sphere(size*width*scale);
@@ -256,8 +240,8 @@ void generateHilbert(int size, int m, float clock, float scale) // m = order of 
 }
 
 // Reference : http://www.dcs.bbk.ac.uk/TriStarp/pubs/JL1_00.pdf
-long[] mapKey(long key[], long n, long m, long coord[])
-{
+long[] mapKey(long key[], long n, long m, long coord[]) {
+
   long ai;
   long rho_i;
   long Ji;
@@ -274,8 +258,7 @@ long[] mapKey(long key[], long n, long m, long coord[])
     coord[i] = 0;
   }
 
-  for (i = 0; i < m; ++i)
-  {
+  for (i = 0; i < m; ++i) {
     // get the rho of the current iteration
     rho_i = key[i];
 
@@ -283,17 +266,14 @@ long[] mapKey(long key[], long n, long m, long coord[])
     Ji = n;
     int j;
     for (j = 1; j < n; ++j)
-      if ((rho_i >> j & 1) == (rho_i & 1))
-        continue;
-      else
-        break;
-    if (j != n)
-      Ji -= j;
+      if ((rho_i >> j & 1) == (rho_i & 1)) continue;
+      else break;
+      
+    if (j != n) Ji -= j;
 
     Oi = rho_i ^ (rho_i / 2);
 
-    if (rho_i < 3)
-      Pi = 0;
+    if (rho_i < 3) Pi = 0;
     else
       if ((rho_i % 2) != 0)
         Pi = (rho_i-1) ^ ((rho_i-1)/2);
@@ -302,12 +282,10 @@ long[] mapKey(long key[], long n, long m, long coord[])
 
     wi = wi ^ Pi_bar;
 
-    if (Jsum % n == 0)
-    {
+    if (Jsum % n == 0) {
       Oi_bar = Oi;
       Pi_bar = Pi;
-    } else
-    {
+    } else {
       long temp1 = Oi >> (Jsum % n);
       long temp2 = Oi << (n - (Jsum % n));
       Oi_bar  = temp2 | temp1;
@@ -323,8 +301,7 @@ long[] mapKey(long key[], long n, long m, long coord[])
 
     long maskt = 1 << (n-1);
 
-    for (j = 0; j < n; ++j)
-    {
+    for (j = 0; j < n; ++j) {
       if ((ai & maskt) != 0)
         coord[j] |= mask;
       maskt >>= 1;
@@ -335,8 +312,8 @@ long[] mapKey(long key[], long n, long m, long coord[])
 }
 
 // utility function to put a color
-void setColor(int index)
-{
+void setColor(int index) {
+
   switch (index) {
     case 1 : fill(255,   0,   0); break; // red
     case 2 : fill(200,   0, 255); break; // cyan
